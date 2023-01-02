@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require_relative '../lib/chat_terminal'
+
+
+options = {}
+OptionParser.new do |opts|
+	opts.on '-u', '--user USER', String, 'User types, server or client' do |u|
+		options[:user] = u
+	end
+end.parse!
+
+case options[:user]&.downcase
+when "server"
+	ChatTerminal.start_server
+when "client"
+	ChatTerminal.start_client
+when nil
+	raise OptionParser::MissingArgument
+else
+	raise OptionParser::InvalidArgument
+end
